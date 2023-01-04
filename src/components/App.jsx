@@ -1,20 +1,26 @@
 import { Route, Routes } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import { Home } from './Home/Home';
+import { Home } from '../Pages/Home/Home';
+import { GlobalStyle } from './GlobalStyled';
+import { Layout } from './Layout/Layuot';
+import { Cast } from './Cast/Cast';
+import { Reviews } from './Reviews/Reviews';
+import { MovieDetails } from '../Pages/MovieDetails/MovieDetails';
+import { Movies } from '../Pages/Movies/Movies';
 
 export const App = () => {
   return (
-    <div>
+    <>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/movies" element={<div>Movies</div>}>
-          <Route path=":movieId" element={<div>movieId</div>}>
-            <Route path="cast" element={<div>cast</div>} />
-            <Route path="reviews" element={<div>reviews</div>} />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="movies" element={<Movies />} />
+          <Route path="/movies/:id" element={<MovieDetails />}>
+            <Route path="cast" element={<Cast />} />
+            <Route path="reviews" element={<Reviews />} />
           </Route>
         </Route>
       </Routes>
-      <ToastContainer autoClose={2500} />
-    </div>
+      <GlobalStyle />
+    </>
   );
 };
