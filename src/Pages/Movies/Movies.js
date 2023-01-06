@@ -3,11 +3,18 @@ import { useSearchParams, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FaSearch } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
-import { Loader } from 'components/Loader/Loader';
-import { MovieList } from 'components/MovieList/MovieList';
-import { fetch } from '../../components/ApiFetch';
+import Loader from 'components/Loader/Loader';
+import MovieList from 'components/MovieList/MovieList';
+import fetch from '../../components/ApiFetch';
+import {
+  SearchbarHeader,
+  SearchForm,
+  SearchFormButton,
+  SearchFormInput,
+  LoadButton,
+} from './Movies.styled';
 
-export const Movies = () => {
+const Movies = () => {
   const [query, setQuery] = useState('');
   const [totalMovies, setTotalMovies] = useState(0);
   const [movies, setMovies] = useState([]);
@@ -67,23 +74,23 @@ export const Movies = () => {
 
   return (
     <>
-      <div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <input
+      <SearchbarHeader>
+        <SearchForm onSubmit={handleSubmit(onSubmit)}>
+          <SearchFormInput
             type="text"
             {...register('name', { required: true })}
             autoComplete="off"
             autoFocus
             placeholder="Search movie"
           />
-          <button type="submit">
-            <FaSearch size={20} />
-          </button>
-        </form>
-      </div>
+          <SearchFormButton type="submit">
+            <FaSearch size={30} />
+          </SearchFormButton>
+        </SearchForm>
+      </SearchbarHeader>
       <MovieList movies={movies} location={location} />
       {movies.length !== 0 && totalPages !== 1 && (
-        <button onClick={loadMoreMovies} />
+        <LoadButton onClick={loadMoreMovies}>Load more</LoadButton>
       )}
 
       {loader && <Loader />}
@@ -91,3 +98,5 @@ export const Movies = () => {
     </>
   );
 };
+
+export default Movies;

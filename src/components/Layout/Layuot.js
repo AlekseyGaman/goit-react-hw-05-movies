@@ -1,20 +1,22 @@
-import { NavLink } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import { Suspense } from 'react';
-import { Loader } from 'components/Loader/Loader';
+import Loader from 'components/Loader/Loader';
+import { Header, Nav, LinkNav } from './Layout.styled';
 
-export const Layout = () => {
+const Layout = () => {
   return (
-    <div>
-      <header>
-        <nav>
-          <NavLink to="/">Home</NavLink>
-          <NavLink to="/movies">Movies</NavLink>
-        </nav>
-      </header>
-      <Suspense fullback={<Loader />}>
+    <>
+      <Header>
+        <Nav>
+          <LinkNav to="/">Home</LinkNav>
+          <LinkNav to="/movies">Movies</LinkNav>
+        </Nav>
+      </Header>
+      <Suspense fallback={<Loader />}>
         <Outlet />
       </Suspense>
-    </div>
+    </>
   );
 };
+
+export default Layout;

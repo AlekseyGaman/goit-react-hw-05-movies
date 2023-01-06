@@ -1,10 +1,11 @@
-import { Loader } from 'components/Loader/Loader';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { fetch } from '../../components/ApiFetch';
+import fetch from '../../components/ApiFetch';
+import Loader from 'components/Loader/Loader';
+import { CastList, CastItem } from './Cast.styled';
 
-export const Cast = () => {
+const Cast = () => {
   const [cast, setCast] = useState([]);
   const [loader, setLoader] = useState(false);
 
@@ -35,12 +36,12 @@ export const Cast = () => {
       {cast.length === 0 && !loader ? (
         <h1>Sorry, we didn't find anything</h1>
       ) : (
-        <ul>
+        <CastList>
           {cast.length === 0 && !loader ? (
             <h3>Sorry, we didn't find anything</h3>
           ) : (
             cast.map(({ id, character, name, profile_path }) => (
-              <li key={id}>
+              <CastItem key={id}>
                 <img
                   loading="lazy"
                   src={profile_path ? imgLink + profile_path : defaultImg}
@@ -48,11 +49,13 @@ export const Cast = () => {
                 />
                 <p>{name}</p>
                 <p>Character: {character ? character : 'undefined'}</p>
-              </li>
+              </CastItem>
             ))
           )}
-        </ul>
+        </CastList>
       )}
     </>
   );
 };
+
+export default Cast;

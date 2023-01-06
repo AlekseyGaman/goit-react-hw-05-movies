@@ -26,6 +26,11 @@ body {
 img {
   display: block;
   max-width: 100%;
-  height: auto;
+  height: 90%;
+}
+
+ul {
+  justify-content: center;
+  list-style: none;
 }
 `;

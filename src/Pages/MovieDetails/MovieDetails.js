@@ -1,17 +1,19 @@
-import {
-  useParams,
-  useLocation,
-  Outlet,
-  Link,
-  NavLink,
-} from 'react-router-dom';
+import { useParams, useLocation, Outlet, NavLink } from 'react-router-dom';
 import { useEffect, useState, Suspense } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { fetch } from '../../components/ApiFetch';
-import { Loader } from 'components/Loader/Loader';
+import fetch from '../../components/ApiFetch';
+import Loader from 'components/Loader/Loader';
+import {
+  Main,
+  BackLink,
+  InfoContainer,
+  MainInfo,
+  AdditionalContainer,
+  AdditionalInfo,
+} from './MovieDetails.styled';
 
-export const MovieDetails = () => {
+const MovieDetails = () => {
   const [loader, setLoader] = useState(false);
   const [movie, setMovie] = useState({});
 
@@ -20,7 +22,7 @@ export const MovieDetails = () => {
   const returnBack = location.state ? location.state.from : `/movies`;
 
   const imgLink = 'https://image.tmdb.org/t/p/w300';
-  const defaultImg = `https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg`;
+  const defaultImg = `https://ranobehub.org/img/ranobe/posters/default.jpg`;
 
   useEffect(() => {
     const searchMovie = `https://api.themoviedb.org/3/movie/${id}?api_key=977f926e593c9ca5548c1d2b3d2a0ca4&language=en-US`;
@@ -39,13 +41,13 @@ export const MovieDetails = () => {
   }, [id]);
 
   const {
-    poster_path,
     name,
+    original_title,
     genres,
     overview,
-    vote_average,
-    title,
+    poster_path,
     release_date,
+    vote_average,
   } = movie;
 
   if (!release_date) {
@@ -54,42 +56,47 @@ export const MovieDetails = () => {
 
   return (
     <>
-      <main>
-        <Link to={returnBack}>Go back</Link>
-        <div id={id}>
+      {loader && <Loader />}
+      <Main>
+        <InfoContainer id={id}>
           <img
             src={poster_path ? imgLink + poster_path : defaultImg}
-            alt={title ?? name}
+            alt={original_title ?? name}
           />
-          <h1>
-            {title ?? name} ({release_date.slice(0, 4)})
-          </h1>
-          <p>User Score: {(vote_average * 10).toFixed(1)}%</p>
-          <h2>Overview</h2>
-          <p>{overview}</p>
-          <h3>Genres</h3>
-          <p>
-            {genres.length
-              ? genres.map(({ name }) => name).join(', ')
-              : 'Unknown genres'}
-          </p>
-        </div>
-        <div>
+          <MainInfo>
+            <h1>
+              {original_title ?? name} ({release_date.slice(0, 4)})
+            </h1>
+            <p>User Score: {(vote_average * 10).toFixed(1)}%</p>
+            <h2>Overview</h2>
+            <p>{overview}</p>
+            <h3>Genres</h3>
+            <p>
+              {genres.length
+                ? genres.map(({ name }) => name).join(', ')
+                : 'Unknown genres'}
+            </p>
+            <BackLink to={returnBack}>Go back</BackLink>
+          </MainInfo>
+        </InfoContainer>
+
+        <AdditionalContainer>
           <h4>Additional Information</h4>
-          <div>
+          <AdditionalInfo>
             <NavLink to="cast" state={{ from: returnBack }}>
               Cast
             </NavLink>
             <NavLink to="reviews" state={{ from: returnBack }}>
               Reviews
             </NavLink>
-          </div>
-        </div>
-      </main>
-      {loader && <Loader />}
-      <Suspense ffullback={null}>
+          </AdditionalInfo>
+        </AdditionalContainer>
+      </Main>
+      <Suspense fallback={null}>
         <Outlet />
       </Suspense>
     </>
   );
 };
+
+export default MovieDetails;

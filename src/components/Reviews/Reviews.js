@@ -1,10 +1,11 @@
-import { Loader } from 'components/Loader/Loader';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { fetch } from '../../components/ApiFetch';
+import fetch from '../../components/ApiFetch';
+import Loader from 'components/Loader/Loader';
+import { ReviewsList, ReviewsItem } from './Reviews.styled';
 
-export const Reviews = () => {
+const Reviews = () => {
   const [reviews, setReviews] = useState([]);
   const [loader, setLoader] = useState(false);
 
@@ -33,15 +34,17 @@ export const Reviews = () => {
       {reviews.length === 0 && !loader ? (
         <h1>Sorry, we didn't find anything</h1>
       ) : (
-        <ul>
+        <ReviewsList>
           {reviews.map(({ author, content, id }) => (
-            <li key={id}>
+            <ReviewsItem key={id}>
               <h3>Author: {author}</h3>
               <p>{content}</p>
-            </li>
+            </ReviewsItem>
           ))}
-        </ul>
+        </ReviewsList>
       )}
     </div>
   );
 };
+
+export default Reviews;
